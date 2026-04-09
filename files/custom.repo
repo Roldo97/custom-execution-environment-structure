@@ -1,0 +1,17 @@
+[ubi-9-baseos]
+name = Red Hat Universal Base Image 9 (RPMs) - BaseOS
+baseurl = https://satellite.lab.roldo.io/pulp/content/LAB/Library/custom/Red_Hat_UBI_repositories_/ubi-9-baseos-rpms/
+enabled = 1
+gpgcheck = 0
+
+[ubi-9-appstream]
+name = Red Hat Universal Base Image 9 (RPMs) - AppStream
+baseurl = https://satellite.lab.roldo.io/pulp/content/LAB/Library/custom/Red_Hat_UBI_repositories_/ubi-9-appstream-rpms/
+enabled = 1
+gpgcheck = 0
+
+[ubi-9-codeready-builder-rpms]
+name = Red Hat Universal Base Image 9 (RPMs) - CodeReady Builder
+baseurl = https://satellite.lab.roldo.io/pulp/content/LAB/Library/custom/Red_Hat_UBI_repositories_/ubi-9-codeready-builder-rpms/
+enabled = 1
+gpgcheck = 0

@@ -1,0 +1,47 @@
+version: 3
+
+images:
+  base_image:
+    # Image which will be used as base
+    name: aap-aio.lab.roldo.io/ee-minimal-rhel9:latest
+
+dependencies:
+  # Dependencies to be installed with dnf
+  system: bindep.txt
+  # Dependencies to be installed with ansible-galaxy
+  galaxy: requirements.yml
+
+additional_build_files:
+  # ansible.cfg config file to be used for collections install
+  - src: files/ansible.cfg
+    dest: configs
+
+  # Repo pointing to Satellite with UBI definitions
+  - src: files/custom.repo
+    dest: configs
+
+  # CA certificate for pull from hub
+  - src: files/aap-ca-bundle.pem
+    dest: configs
+
+  # Satellite CA cert
+  - src: files/katello-server-ca.crt
+    dest: configs
+
+additional_build_steps:
+  prepend_base:
+    # Removes default UBI repo and uses Satellite UBI repos instead
+    - RUN rm -f /etc/yum.repos.d/ubi.repo
+    - ADD _build/configs/custom.repo /etc/yum.repos.d/custom.repo
+
+    # Copy the hub and Satellite CA certificates and update the trust store
+    - ADD _build/configs/aap-ca-bundle.pem /etc/pki/ca-trust/source/anchors
+    - ADD _build/configs/katello-server-ca.crt /etc/pki/ca-trust/source/anchors
+    - RUN update-ca-trust
+
+    # Force a proxy to be used for Python dependencies
+    - RUN pip3 config --global set global.trusted-host "pypi.org files.pythonhosted.org pypi.python.org"
+    - RUN pip3 config --user set global.proxy "http://aap-aio-db.lab.roldo.io:3128"
+
+  prepend_galaxy:
+    - ADD _build/configs/ansible.cfg /etc/ansible/ansible.cfg
