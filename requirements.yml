@@ -3,3 +3,4 @@ collections:
   - name: community.general
   - name: citrix.adc
   - name: ansible.windows
+  - name: vmware.vmware

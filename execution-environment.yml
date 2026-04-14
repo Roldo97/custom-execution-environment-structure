@@ -6,10 +6,17 @@ images:
     name: aap-aio.lab.roldo.io/ee-minimal-rhel9:latest
 
 dependencies:
+  # Which Python interpreter will be used during build and runtime
+  python_interpreter:
+#    package_system: "python312"
+    python_path: "/usr/bin/python3.12"
+
   # Dependencies to be installed with dnf
   system: bindep.txt
   # Dependencies to be installed with ansible-galaxy
   galaxy: requirements.yml
+  # Python dependencies
+  python: requirements.txt
 
 additional_build_files:
   # ansible.cfg config file to be used for collections install
@@ -45,3 +52,4 @@ additional_build_steps:
 
   prepend_galaxy:
     - ADD _build/configs/ansible.cfg /etc/ansible/ansible.cfg
+
